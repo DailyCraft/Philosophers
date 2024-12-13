@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:17:16 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/11 11:40:29 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:54:30 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,22 +82,27 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
+	data.eat_amount = -1;
 	if (!parse(&data, argc, argv))
 		return (0);
 	data.stopped = 0;
-	data.eat_amount = -1;
-	data.forks_owner = malloc(data.amount * sizeof(int));
 	data.threads = malloc(data.amount * sizeof(pthread_t));
-	memset(data.forks_owner, 0, data.amount * sizeof(int));
+	data.forks_owner = malloc(data.amount * sizeof(int));
+	data.satiated = malloc(data.amount * sizeof(int));
 	memset(data.threads, 0, data.amount * sizeof(pthread_t));
+	memset(data.forks_owner, 0, data.amount * sizeof(int));
+	memset(data.satiated, 0, data.amount * sizeof(int));
 	pthread_mutex_init(&data.forks_mutex, NULL);
 	pthread_mutex_init(&data.stopped_mutex, NULL);
+	pthread_mutex_init(&data.satiated_mutex, NULL);
 	if (init_threads(&data))
 		join_threads(&data);
 	else
 		printf("Failed to create threads for all philosophers!\n");
 	pthread_mutex_destroy(&data.forks_mutex);
 	pthread_mutex_destroy(&data.stopped_mutex);
-	free(data.forks_owner);
+	pthread_mutex_destroy(&data.satiated_mutex);
 	free(data.threads);
+	free(data.forks_owner);
+	free(data.satiated);
 }

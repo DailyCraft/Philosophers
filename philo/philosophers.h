@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:14:34 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/11 11:39:40 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:59:34 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,26 @@
 typedef struct s_data
 {
 	pthread_t		*threads;
-	pthread_mutex_t	forks_mutex;
-	pthread_mutex_t	stopped_mutex;
+
 	int				amount;
 	int				die;
 	int				eat;
 	int				sleep;
 	int				eat_amount;
-	int				stopped;
 
+	pthread_mutex_t	forks_mutex;
 	int				*forks_owner;
+	pthread_mutex_t	stopped_mutex;
+	int				stopped;
+	pthread_mutex_t	satiated_mutex;
+	int				*satiated;
 }	t_data;
 
 void	*action(t_data *data);
 int		secure_atoi(char *str, int *err);
 long	get_time(void);
-int		get_fork(t_data *data, int index);
-void	set_fork(t_data *data, int index, int id);
+int		*get_fork(t_data *data, int index);
 int		is_stopped(t_data *data);
+void	stoppable_mssleep(t_data *data, unsigned int ms);
 
 #endif
