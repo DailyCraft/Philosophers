@@ -6,38 +6,11 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:25:30 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/13 22:54:04 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:53:27 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-int	secure_atoi(char *str, int *err)
-{
-	unsigned int	result;
-	int				neg;
-
-	result = 0;
-	neg = 1;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			neg = -1;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		if (result * 10 + *str - '0' > (unsigned) 2147483647 + (neg == -1))
-			return (*err = 1, 0);
-		result = result * 10 + *str - '0';
-		str++;
-	}
-	if (*str)
-		return (*err = 1, 0);
-	return (result * neg);
-}
 
 long	get_time(void)
 {
@@ -62,7 +35,7 @@ int	is_stopped(t_data *data)
 	return (stopped);
 }
 
-void	stoppable_mssleep(t_data *data, unsigned int ms)
+void	smart_sleep(t_data *data, unsigned int ms)
 {
 	unsigned int	i;
 

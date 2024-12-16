@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:25:48 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/11 12:29:06 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:26:16 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,16 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+
+typedef struct s_data
+{
+	int	amount;
+	int	die;
+	int	eat;
+	int	sleep;
+	int	eat_amount;
+}	t_data;
+
+int	ft_clear_atoi(const char *str, int *unclear);
 
 #endif

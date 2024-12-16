@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 07:50:40 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/13 19:18:14 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/16 11:56:32 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,51 +28,6 @@ static void	try_take_forks(t_data *data, int id, int *forks)
 		printf("%ld %d has taken a fork\n", get_time(), id);
 	}
 	pthread_mutex_unlock(&data->forks_mutex);
-}
-
-static void	check_satiated(t_data *data, int id)
-{
-	int	i;
-
-	if (data->eat_amount == -1)
-		return ;
-	pthread_mutex_lock(&data->satiated_mutex);
-	data->satiated[id - 1]++;
-	i = 0;
-	while (i < data->amount)
-	{
-		if (data->satiated[i] < data->eat_amount)
-		{
-			pthread_mutex_unlock(&data->satiated_mutex);
-			return ;
-		}
-		i++;
-	}
-	pthread_mutex_unlock(&data->satiated_mutex);
-	pthread_mutex_lock(&data->stopped_mutex);
-	data->stopped = 1;
-	pthread_mutex_unlock(&data->stopped_mutex);
-}
-
-static void	try_eating(t_data *data, int id, int *forks, long *last_eat)
-{
-	if (*forks != 2)
-		return ;
-	printf("%ld %d is eating\n", get_time(), id);
-	stoppable_mssleep(data, data->eat);
-	check_satiated(data, id);
-	if (is_stopped(data))
-		return ;
-	*forks = 0;
-	*last_eat = get_time();
-	printf("%ld %d is sleeping\n", get_time(), id);
-	pthread_mutex_lock(&data->forks_mutex);
-	*get_fork(data, id) = 0;
-	*get_fork(data, id + 1) = 0;
-	pthread_mutex_unlock(&data->forks_mutex);
-	stoppable_mssleep(data, data->sleep);
-	if (!is_stopped(data))
-		printf("%ld %d is thinking\n", get_time(), id);
 }
 
 static void	can_survive(t_data *data, int id, long last_eat)
@@ -98,6 +53,8 @@ void	*action(t_data *data)
 	pthread_mutex_unlock(&data->stopped_mutex);
 	forks = 0;
 	last_eat = get_time();
+	if (thread_id % 2 == 0)
+		thinking(data, thread_id, last_eat);
 	while (!is_stopped(data))
 	{
 		try_take_forks(data, thread_id, &forks);

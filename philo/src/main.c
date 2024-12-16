@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:17:16 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/13 16:54:30 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:28:21 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ static int	parse_args(int *value, char *arg)
 {
 	int	err;
 
-	*value = secure_atoi(arg, (err = 0, &err));
-	if (!err && *value < 1)
-		err = 1;
+	*value = ft_clear_atoi(arg, &err);
+	err += *value < 1;
 	return (!err);
 }
 
@@ -86,12 +85,9 @@ int	main(int argc, char **argv)
 	if (!parse(&data, argc, argv))
 		return (0);
 	data.stopped = 0;
-	data.threads = malloc(data.amount * sizeof(pthread_t));
-	data.forks_owner = malloc(data.amount * sizeof(int));
-	data.satiated = malloc(data.amount * sizeof(int));
-	memset(data.threads, 0, data.amount * sizeof(pthread_t));
-	memset(data.forks_owner, 0, data.amount * sizeof(int));
-	memset(data.satiated, 0, data.amount * sizeof(int));
+	data.threads = ft_calloc(data.amount, sizeof(pthread_t));
+	data.forks_owner = ft_calloc(data.amount, sizeof(int));
+	data.satiated = ft_calloc(data.amount, sizeof(int));
 	pthread_mutex_init(&data.forks_mutex, NULL);
 	pthread_mutex_init(&data.stopped_mutex, NULL);
 	pthread_mutex_init(&data.satiated_mutex, NULL);

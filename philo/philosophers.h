@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:14:34 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/13 15:59:34 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:40:01 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,17 @@ typedef struct s_data
 	int				*satiated;
 }	t_data;
 
+void	try_eating(t_data *data, int id, int *forks, long *last_eat);
+void	thinking(t_data *data, int id, long last_eat);
+
+void	*ft_calloc(size_t nmemb, size_t size);
+int		ft_clear_atoi(const char *str, int *unclear);
+
 void	*action(t_data *data);
-int		secure_atoi(char *str, int *err);
+
 long	get_time(void);
 int		*get_fork(t_data *data, int index);
 int		is_stopped(t_data *data);
-void	stoppable_mssleep(t_data *data, unsigned int ms);
+void	smart_sleep(t_data *data, unsigned int ms);
 
 #endif
