@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:14:34 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/16 12:40:01 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:57:51 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,40 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-typedef struct s_data
-{
-	pthread_t		*threads;
+typedef struct s_data	t_data;
 
+typedef struct s_philo
+{
+	int		id;
+	long	last_eat;
+	int		eat_count;
+	t_data	*data;
+}	t_philo;
+
+struct s_data
+{
 	int				amount;
 	int				die;
 	int				eat;
 	int				sleep;
 	int				eat_amount;
 
-	pthread_mutex_t	forks_mutex;
-	int				*forks_owner;
-	pthread_mutex_t	stopped_mutex;
-	int				stopped;
-	pthread_mutex_t	satiated_mutex;
-	int				*satiated;
-}	t_data;
+	pthread_t		*threads;
+	pthread_mutex_t	*forks;
+	t_philo			*philos;
 
-void	try_eating(t_data *data, int id, int *forks, long *last_eat);
-void	thinking(t_data *data, int id, long last_eat);
+	int				stopped;
+	pthread_mutex_t	eat_mutex;
+	pthread_mutex_t	write_mutex;
+};
 
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_clear_atoi(const char *str, int *unclear);
 
-void	*action(t_data *data);
+void	*action(t_philo *data);
 
 long	get_time(void);
-int		*get_fork(t_data *data, int index);
-int		is_stopped(t_data *data);
 void	smart_sleep(t_data *data, unsigned int ms);
+void	log(t_philo *philo, char *action);
 
 #endif
