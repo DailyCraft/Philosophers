@@ -6,7 +6,7 @@
 #    By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/22 08:59:59 by dvan-hum          #+#    #+#              #
-#    Updated: 2024/12/17 16:25:50 by dvan-hum         ###   ########.fr        #
+#    Updated: 2024/12/18 11:01:11 by dvan-hum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = philo
 #CC = gcc -Wall -Wextra -Werror -pthread -g -fsanitize=address
 CC = clang -Wall -Wextra -Werror -pthread -g
 
-SRC = ft.c main.c philosopher.c utils.c
+SRC = data.c ft.c main.c parse.c philosopher.c utils.c
 OBJ = $(SRC:%.c=obj/%.o)
 
 ifndef VERBOSE

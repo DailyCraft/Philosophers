@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:14:34 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/17 16:57:51 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:50:36 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,23 @@ struct s_data
 	pthread_mutex_t	*forks;
 	t_philo			*philos;
 
+	pthread_mutex_t	stopped_mutex;
 	int				stopped;
 	pthread_mutex_t	eat_mutex;
 	pthread_mutex_t	write_mutex;
 };
 
+int		parse(t_data *data, int argc, char **argv);
+int		init_data(t_data *data, int argc, char **argv);
+void	free_data(t_data *data, int detach_threads);
+
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_clear_atoi(const char *str, int *unclear);
 
-void	*action(t_philo *data);
+void	*philo(t_philo *data);
 
 long	get_time(void);
-void	smart_sleep(t_data *data, unsigned int ms);
-void	log(t_philo *philo, char *action);
+int		is_stopped(t_philo *philo);
+void	print(t_philo *philo, char *action);
 
 #endif
