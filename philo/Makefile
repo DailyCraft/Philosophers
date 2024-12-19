@@ -6,7 +6,7 @@
 #    By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/22 08:59:59 by dvan-hum          #+#    #+#              #
-#    Updated: 2024/12/19 18:44:08 by dvan-hum         ###   ########.fr        #
+#    Updated: 2024/12/19 22:12:25 by dvan-hum         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philo
 
 CC = gcc -Wall -Wextra -Werror -O3 -pthread
 
-SRC = data.c ft.c main.c parse.c philosopher.c utils.c
+SRC = data.c ft.c main.c parsing.c philosopher.c utils.c
 HEADERS = philosophers.h
 OBJ = $(SRC:%.c=obj/%.o)
 

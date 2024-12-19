@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 09:39:37 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/18 11:52:30 by dvan-hum         ###   ########.fr       */
+/*   Created: 2024/12/19 22:13:59 by dvan-hum          #+#    #+#             */
+/*   Updated: 2024/12/19 22:14:00 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 static int	parse_args(int *value, char *arg)
 {

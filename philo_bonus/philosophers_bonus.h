@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:25:48 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/16 14:26:16 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:54:42 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,38 @@
 # include <sys/stat.h>
 # include <semaphore.h>
 
+typedef struct s_philo
+{
+	int			id;
+	int			eat_count;
+	long		last_eat;
+	pthread_t	checker;
+}	t_philo;
+
 typedef struct s_data
 {
-	int	amount;
-	int	die;
-	int	eat;
-	int	sleep;
-	int	eat_amount;
+	int		amount;
+	int		die;
+	int		eat;
+	int		sleep;
+	int		eat_amount;
+
+	sem_t	*forks;
+	sem_t	*writing;
+	sem_t	*stopped;
+
+	t_philo	philo;
+	pid_t	*child_pids;
 }	t_data;
 
-int	ft_clear_atoi(const char *str, int *unclear);
+int		parse(t_data *data, int argc, char **argv);
+int		init_data(t_data *data, int argc, char **argv);
+void	free_data(t_data *data, int unlink);
+
+int		ft_clear_atoi(const char *str, int *unclear);
+long	get_time(void);
+void	print(t_data *data, char *action);
+
+void	philo(t_data *data);
 
 #endif
