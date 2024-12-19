@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 11:14:34 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/18 11:50:36 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:13:36 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	*philo(t_philo *data);
 long	get_time(void);
 int		is_stopped(t_philo *philo);
 void	print(t_philo *philo, char *action);
+void	philo_sleep(t_philo *philo, unsigned int ms);
 
 #endif

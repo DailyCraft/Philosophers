@@ -6,26 +6,34 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:16:24 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/18 11:50:29 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:52:51 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static void	init_philos(t_data *data)
+static void	init_philos(t_data *data, int init_last_eat)
 {
 	long	current;
 	int		i;
 
-	current = get_time();
-	i = 0;
-	while (i < data->amount)
+	if (!init_last_eat)
 	{
-		data->philos[i].id = i;
-		data->philos[i].data = data;
-		data->philos[i].eat_count = 0;
-		data->philos[i].last_eat = current;
-		i++;
+		i = 0;
+		while (i < data->amount)
+		{
+			data->philos[i].id = i;
+			data->philos[i].data = data;
+			data->philos[i].eat_count = 0;
+			i++;
+		}
+	}
+	else
+	{
+		current = get_time();
+		i = 0;
+		while (i < data->amount)
+			data->philos[i++].last_eat = current;
 	}
 }
 
@@ -57,9 +65,13 @@ int	init_data(t_data *data, int argc, char **argv)
 	pthread_mutex_init(&data->stopped_mutex, NULL);
 	pthread_mutex_init(&data->eat_mutex, NULL);
 	pthread_mutex_init(&data->write_mutex, NULL);
-	init_philos(data);
 	pthread_mutex_lock(&data->stopped_mutex);
-	return (!init_threads_mutex(data));
+	init_philos(data, 0);
+	if (!init_threads_mutex(data))
+		return (1);
+	init_philos(data, 1);
+	pthread_mutex_unlock(&data->stopped_mutex);
+	return (0);
 }
 
 void	free_data(t_data *data, int detach_threads)
@@ -69,6 +81,8 @@ void	free_data(t_data *data, int detach_threads)
 	i = 0;
 	while (i < data->amount)
 	{
+		if (data->threads[i] == 0)
+			break ;
 		if (detach_threads)
 			pthread_detach(data->threads[i++]);
 		else

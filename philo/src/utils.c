@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:25:30 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/18 09:02:10 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:13:36 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	get_time(void)
 {
-	static struct timeval	tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1e3 + tv.tv_usec / 1e3);
@@ -36,4 +36,18 @@ void	print(t_philo *philo, char *action)
 	if (!is_stopped(philo))
 		printf("%ld %d %s\n", get_time(), philo->id + 1, action);
 	pthread_mutex_unlock(&philo->data->write_mutex);
+}
+
+void	philo_sleep(t_philo *philo, unsigned int ms)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (!is_stopped(philo) && i + 100 <= ms)
+	{
+		usleep(100 * 1e3);
+		i += 100;
+	}
+	if (!is_stopped(philo) && i < ms)
+		usleep((ms - i) * 1e3);
 }

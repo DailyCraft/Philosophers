@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 07:50:40 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/18 11:21:54 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:41:23 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@ static void	eat(t_philo *philo)
 	forks = philo->data->forks;
 	pthread_mutex_lock(&forks[philo->id]);
 	print(philo, "has taken a fork");
+	if (philo->id == (philo->id + 1) % philo->data->amount)
+	{
+		philo_sleep(philo, philo->data->die);
+		pthread_mutex_unlock(&forks[philo->id]);
+		return ;
+	}
 	pthread_mutex_lock(&forks[(philo->id + 1) % philo->data->amount]);
 	print(philo, "has taken a fork");
 	print(philo, "is eating");
@@ -26,9 +32,9 @@ static void	eat(t_philo *philo)
 	philo->last_eat = get_time();
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->data->eat_mutex);
-	usleep(philo->data->sleep * 1e3);
-	pthread_mutex_unlock(&forks[philo->id]);
+	philo_sleep(philo, philo->data->eat);
 	pthread_mutex_unlock(&forks[(philo->id + 1) % philo->data->amount]);
+	pthread_mutex_unlock(&forks[philo->id]);
 }
 
 void	*philo(t_philo *philo)
@@ -40,10 +46,8 @@ void	*philo(t_philo *philo)
 	while (!is_stopped(philo))
 	{
 		eat(philo);
-		if (is_stopped(philo))
-			break ;
 		print(philo, "is sleeping");
-		usleep(philo->data->sleep * 1e3);
+		philo_sleep(philo, philo->data->sleep);
 		print(philo, "is thinking");
 	}
 	return (NULL);
