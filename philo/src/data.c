@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:16:24 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/19 16:52:51 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/20 09:11:13 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,8 @@ void	free_data(t_data *data, int detach_threads)
 	int	i;
 
 	i = 0;
-	while (i < data->amount)
+	while (i < data->amount && data->threads[i])
 	{
-		if (data->threads[i] == 0)
-			break ;
 		if (detach_threads)
 			pthread_detach(data->threads[i++]);
 		else

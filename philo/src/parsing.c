@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 09:39:37 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/19 22:12:28 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/20 07:45:07 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ int	parse(t_data *data, int argc, char **argv)
 	if (argc != 5 && argc != 6)
 	{
 		printf("%s <number_of_philosophers> ", argv[0]);
-		printf("<time_to_die> <time_to_eat> <time_to_sleep> ");
-		printf("[number_of_times_each_philosopher_must_eat]\n");
+		printf("<die_time> <eat_time> <sleep_time> [eat_amount]\n");
 		return (0);
 	}
 	return (parse_args(&data->amount, argv[1])

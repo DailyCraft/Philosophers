@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:25:48 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/19 22:54:42 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:22:08 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_philo
 	int			eat_count;
 	long		last_eat;
 	pthread_t	checker;
+	pthread_t	stopper;
+	int			stopped;
 }	t_philo;
 
 typedef struct s_data
@@ -44,6 +46,8 @@ typedef struct s_data
 
 	sem_t	*forks;
 	sem_t	*writing;
+	sem_t	*all_ate;
+	sem_t	*start;
 	sem_t	*stopped;
 
 	t_philo	philo;
@@ -55,8 +59,12 @@ int		init_data(t_data *data, int argc, char **argv);
 void	free_data(t_data *data, int unlink);
 
 int		ft_clear_atoi(const char *str, int *unclear);
+ssize_t	ft_putnbr(long nbr);
+size_t	ft_strlen(char *str);
 long	get_time(void);
 void	print(t_data *data, char *action);
+void	philo_sleep(t_data *data, unsigned int ms);
+void	stop(t_data *data);
 
 void	philo(t_data *data);
 

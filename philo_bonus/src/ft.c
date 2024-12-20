@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 14:25:32 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/16 14:25:52 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2024/12/20 14:49:31 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,24 @@ int	ft_clear_atoi(const char *str, int *unclear)
 	}
 	*unclear += *str != 0;
 	return (result * neg);
+}
+
+ssize_t	ft_putnbr(long nbr)
+{
+	char	c;
+
+	if (nbr >= 10)
+		ft_putnbr(nbr / 10);
+	c = nbr % 10 + '0';
+	return (write(1, &c, 1));
+}
+
+size_t	ft_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
