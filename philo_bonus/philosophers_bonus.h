@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:25:48 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/20 15:22:08 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:17:39 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_philo
 	int			id;
 	int			eat_count;
 	long		last_eat;
-	pthread_t	checker;
+	pthread_t	loop;
 	pthread_t	stopper;
 	int			stopped;
 }	t_philo;
@@ -49,6 +49,7 @@ typedef struct s_data
 	sem_t	*all_ate;
 	sem_t	*start;
 	sem_t	*stopped;
+	sem_t	*all_stopped;
 
 	t_philo	philo;
 	pid_t	*child_pids;

@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:06:54 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/20 15:35:23 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:17:39 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ long	get_time(void)
 
 void	print(t_data *data, char *action)
 {
-	int	ignore;
+	int ignore	__attribute__((unused));
 
-	(void) ignore;
 	sem_wait(data->writing);
 	if (!data->philo.stopped)
 	{
@@ -62,6 +61,17 @@ void	stop(t_data *data)
 		sem_post(data->stopped);
 		i++;
 	}
-	usleep(500);
+	i = 0;
+	while (i < data->amount)
+	{
+		sem_wait(data->all_stopped);
+		i++;
+	}
+	i = 0;
+	while (i < data->amount)
+	{
+		sem_post(data->forks);
+		i++;
+	}
 	sem_post(data->writing);
 }

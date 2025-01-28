@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:58:41 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/20 15:35:19 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:17:39 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	eat(t_data *data)
 {
+	static int	eat_count = 0;
+
 	sem_wait(data->forks);
 	print(data, "has taken a fork");
 	if (data->philo.id == (data->philo.id + 1) % data->amount)
@@ -26,7 +28,9 @@ static void	eat(t_data *data)
 	print(data, "has taken a fork");
 	print(data, "is eating");
 	data->philo.last_eat = get_time();
-	data->philo.eat_count++;
+	eat_count++;
+	if (data->eat_amount != -1 && eat_count == data->eat_amount)
+		sem_post(data->all_ate);
 	philo_sleep(data, data->eat);
 	sem_post(data->forks);
 	sem_post(data->forks);
@@ -34,24 +38,18 @@ static void	eat(t_data *data)
 
 void	*checker(t_data *data)
 {
-	int	already_post;
-
-	already_post = 0;
 	while (!data->philo.stopped)
 	{
 		if (get_time() - data->philo.last_eat >= data->die)
 		{
 			sem_wait(data->writing);
-			printf("%ld %d died\n", get_time(), data->philo.id + 1);
-			//sem_post(data->writing);
-			stop(data);
+			if (!data->philo.stopped)
+				printf("%ld %d died\n", get_time(), data->philo.id + 1);
+			if (!data->philo.stopped)
+				stop(data);
+			else
+				sem_post(data->writing);
 			return (NULL);
-		}
-		if (data->eat_amount != -1 && !already_post
-			&& data->philo.eat_count >= data->eat_amount)
-		{
-			sem_post(data->all_ate);
-			already_post = 1;
 		}
 		usleep(100);
 	}
@@ -62,20 +60,14 @@ static void	*stopper(t_data *data)
 {
 	sem_wait(data->stopped);
 	data->philo.stopped = 1;
+	sem_post(data->all_stopped);
 	return (NULL);
 }
 
-void	philo(t_data *data)
+static void	*loop(t_data *data)
 {
 	sem_wait(data->start);
 	sem_post(data->start);
-	data->philo.last_eat = get_time();
-	if (data->philo.id % 2)
-		usleep(3e3);
-	pthread_create(&data->philo.checker, NULL,
-		(void *(*)(void *)) checker, data);
-	pthread_create(&data->philo.stopper, NULL,
-		(void *(*)(void *)) stopper, data);
 	while (!data->philo.stopped)
 	{
 		eat(data);
@@ -83,9 +75,19 @@ void	philo(t_data *data)
 		philo_sleep(data, data->sleep);
 		print(data, "is thinking");
 	}
-	printf("a\n");
-	pthread_join(data->philo.checker, NULL);
-	printf("b\n");
+	return (NULL);
+}
+
+void	philo(t_data *data)
+{
+	data->philo.last_eat = get_time();
+	if (data->philo.id % 2)
+		usleep(3e3);
+	pthread_create(&data->philo.loop, NULL,
+		(void *(*)(void *)) loop, data);
+	pthread_create(&data->philo.stopper, NULL,
+		(void *(*)(void *)) stopper, data);
+	checker(data);
+	pthread_join(data->philo.loop, NULL);
 	pthread_join(data->philo.stopper, NULL);
-	printf("c\n");
 }

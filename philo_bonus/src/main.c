@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:29:43 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/20 15:38:48 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:57:10 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	create_forks(t_data *data, int *id)
 		{
 			killall(data);
 			free_data(data, 1);
-			i = write(2, "Failed to create processes for all philosophers!\n", 49);
+			i = write(2,
+					"Failed to create processes for all philosophers!\n", 49);
 			return (0);
 		}
 		data->child_pids[i] = pid;
@@ -55,18 +56,11 @@ static void	start_parent(t_data *data)
 
 	sem_post(data->start);
 	if (data->eat_amount == -1)
-	{
-		i = 0;
-		while (i < data->amount)
-		{
-			waitpid(-1, NULL, 0);
-			i++;
-		}
-	}
+		waitpid(-1, NULL, 0);
 	else
 	{
 		i = 0;
-		while (i < data->amount - 1)
+		while (i < data->amount)
 		{
 			sem_wait(data->all_ate);
 			i++;
@@ -74,7 +68,6 @@ static void	start_parent(t_data *data)
 		sem_wait(data->writing);
 		stop(data);
 	}
-	free_data(data, 1);
 }
 
 int	main(int argc, char **argv)
@@ -91,6 +84,6 @@ int	main(int argc, char **argv)
 		(free(data.child_pids), data.child_pids = NULL);
 		data.philo.id = id;
 		philo(&data);
-		free_data(&data, 0);
 	}
+	free_data(&data, id == -1);
 }
