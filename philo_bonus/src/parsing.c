@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 22:13:59 by dvan-hum          #+#    #+#             */
-/*   Updated: 2024/12/20 14:50:33 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/29 00:01:09 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	parse_args(int *value, char *arg)
 	}
 	if (*value < 1)
 	{
-		err = write(1, "Arguments must be >= 1.\n", 24);
+		err = write(2, "Arguments must be >= 1.\n", 24);
 		return (0);
 	}
 	return (1);

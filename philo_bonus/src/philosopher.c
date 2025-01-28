@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:58:41 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 16:17:39 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 23:37:48 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static void	*stopper(t_data *data)
 
 static void	*loop(t_data *data)
 {
-	sem_wait(data->start);
-	sem_post(data->start);
 	while (!data->philo.stopped)
 	{
 		eat(data);
@@ -80,6 +78,8 @@ static void	*loop(t_data *data)
 
 void	philo(t_data *data)
 {
+	sem_wait(data->start);
+	sem_post(data->start);
 	data->philo.last_eat = get_time();
 	if (data->philo.id % 2)
 		usleep(3e3);

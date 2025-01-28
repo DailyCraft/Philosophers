@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:29:43 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 15:57:10 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:19:56 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,6 @@ static int	create_forks(t_data *data, int *id)
 	return (1);
 }
 
-static void	start_parent(t_data *data)
-{
-	int	i;
-
-	sem_post(data->start);
-	if (data->eat_amount == -1)
-		waitpid(-1, NULL, 0);
-	else
-	{
-		i = 0;
-		while (i < data->amount)
-		{
-			sem_wait(data->all_ate);
-			i++;
-		}
-		sem_wait(data->writing);
-		stop(data);
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -78,7 +58,7 @@ int	main(int argc, char **argv)
 	if (!init_data(&data, argc, argv) || !create_forks(&data, &id))
 		return (1);
 	if (id == -1)
-		start_parent(&data);
+		parent(&data);
 	else
 	{
 		(free(data.child_pids), data.child_pids = NULL);

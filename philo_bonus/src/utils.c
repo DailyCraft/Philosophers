@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:06:54 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 16:17:39 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:48:54 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,14 @@ void	stop(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (i < data->amount)
-	{
+	i = -1;
+	while (++i < data->amount)
 		sem_post(data->stopped);
-		i++;
-	}
-	i = 0;
-	while (i < data->amount)
-	{
+	i = -1;
+	while (++i < data->amount)
 		sem_wait(data->all_stopped);
-		i++;
-	}
-	i = 0;
-	while (i < data->amount)
-	{
+	i = -1;
+	while (++i < data->amount)
 		sem_post(data->forks);
-		i++;
-	}
 	sem_post(data->writing);
 }
