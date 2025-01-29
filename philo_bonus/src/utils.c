@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:06:54 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 22:48:54 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:49:50 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	stop(t_data *data)
 		sem_wait(data->all_stopped);
 	i = -1;
 	while (++i < data->amount)
+	{
 		sem_post(data->forks);
+		sem_post(data->eat_check);
+	}
 	sem_post(data->writing);
 }

@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:58:41 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 23:37:48 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:52:56 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ static void	eat(t_data *data)
 	}
 	sem_wait(data->forks);
 	print(data, "has taken a fork");
+	sem_wait(data->eat_check);
 	print(data, "is eating");
 	data->philo.last_eat = get_time();
+	sem_post(data->eat_check);
 	eat_count++;
 	if (data->eat_amount != -1 && eat_count == data->eat_amount)
 		sem_post(data->all_ate);
@@ -40,6 +42,7 @@ void	*checker(t_data *data)
 {
 	while (!data->philo.stopped)
 	{
+		sem_wait(data->eat_check);
 		if (get_time() - data->philo.last_eat >= data->die)
 		{
 			sem_wait(data->writing);
@@ -51,6 +54,7 @@ void	*checker(t_data *data)
 				sem_post(data->writing);
 			return (NULL);
 		}
+		sem_post(data->eat_check);
 		usleep(100);
 	}
 	return (NULL);

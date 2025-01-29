@@ -6,7 +6,7 @@
 /*   By: dvan-hum <dvan-hum@student.42perpignan.fr> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:25:48 by dvan-hum          #+#    #+#             */
-/*   Updated: 2025/01/28 22:48:35 by dvan-hum         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:46:24 by dvan-hum         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_data
 	sem_t	*start;
 	sem_t	*stopped;
 	sem_t	*all_stopped;
+	sem_t	*eat_check;
 	sem_t	*parent_sem;
 
 	t_philo	philo;
